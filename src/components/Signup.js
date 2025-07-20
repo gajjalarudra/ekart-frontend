@@ -2,16 +2,13 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import './AuthStyles.css'; // Create this CSS file if not already created
 
 const Signup = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
 
   const handleChange = e => {
@@ -21,13 +18,13 @@ const Signup = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Signup user
-      await axios.post('http://43.204.142.97:3001/auth/signup', form);
+      
+     await axios.post('http://43.204.142.97:3001/auth/signup', form);
+      
 
-      // Immediately log in
-      const res = await axios.post('http://43.204.142.97:3001/auth/login', {
+      const res = await axios.post(`http://43.204.142.97:3001/auth/login`, {
         email: form.email,
-        password: form.password
+        password: form.password,
       });
 
       login(res.data.name, res.data.token);
@@ -38,53 +35,52 @@ const Signup = () => {
   };
 
   return (
-    <div className="card mx-auto" style={{ maxWidth: '450px' }}>
-      <div className="card-body">
-        <h4 className="card-title mb-3 text-center">Signup</h4>
+    <div className="auth-container">
+      <form className="auth-card glass" onSubmit={handleSubmit}>
+        <h3 className="text-center mb-4">Create Account</h3>
+
         {error && <div className="alert alert-danger">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label>Name:</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="mb-3">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            className="form-control form-control-lg"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-          <div className="mb-3">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="mb-3">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="form-control form-control-lg"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-          <div className="mb-3">
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="mb-4">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="form-control form-control-lg"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-          <button type="submit" className="btn btn-success w-100">
-            Signup
-          </button>
-        </form>
-      </div>
+        <button className="btn btn-success w-100 btn-lg" type="submit">
+          Sign Up
+        </button>
+      </form>
     </div>
   );
 };

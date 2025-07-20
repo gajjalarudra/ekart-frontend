@@ -86,7 +86,7 @@ function AppContent() {
   if (!user) {
     return (
       <div className="container mt-4" style={{ maxWidth: 400 }}>
-        <h2 className="text-center mb-4">🛒 SuperKart - Please {showSignup ? 'Signup' : 'Login'}</h2>
+        
         {showSignup ? (
           <>
             <Signup />
