@@ -4,17 +4,35 @@ import axios from 'axios';
 function OrderProduct({ product, onClose }) {
   const [quantity, setQuantity] = useState(1);
 
+  // Get token from localStorage
+  const getToken = () => localStorage.getItem('token');
+
   const handleOrder = async () => {
     try {
-      await axios.post('http://43.204.142.97:3001/orders', {
-        user_id: 101, // Static for now; make dynamic later if needed
-        items: [
-          {
-            product_id: product.id,
-            quantity: Number(quantity) // Ensure it's a number
-          }
-        ]
-      });
+      const token = getToken();
+
+      // If no token, alert and exit
+      if (!token) {
+        alert('Please login to place an order');
+        return;
+      }
+
+      await axios.post(
+        'http://43.204.142.97:3001/orders',
+        {
+          items: [
+            {
+              product_id: product.id,
+              quantity: Number(quantity),
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert('Order placed!');
       onClose();
@@ -35,8 +53,12 @@ function OrderProduct({ product, onClose }) {
         max={product.stock}
         onChange={(e) => setQuantity(e.target.value)}
       />
-      <button className="btn btn-primary" onClick={handleOrder}>Confirm Order</button>
-      <button className="btn btn-secondary ms-2" onClick={onClose}>Cancel</button>
+      <button className="btn btn-primary" onClick={handleOrder}>
+        Confirm Order
+      </button>
+      <button className="btn btn-secondary ms-2" onClick={onClose}>
+        Cancel
+      </button>
     </div>
   );
 }
