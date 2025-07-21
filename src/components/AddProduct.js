@@ -7,10 +7,11 @@ function AddProduct() {
     description: '',
     price: '',
     stock: '',
-    image_url: ''
+    image_url: '',
   });
 
   const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -25,23 +26,52 @@ function AddProduct() {
     e.preventDefault();
 
     try {
-      // Step 1: Upload image if selected
+      let imageUrl = '';
+
       if (imageFile) {
+        setUploading(true);
         const formData = new FormData();
         formData.append('image', imageFile);
 
-        const uploadRes = await axios.post('http://43.204.142.97:3001/upload', formData);
-        product.image_url = uploadRes.data.url;
+        const token = localStorage.getItem('token'); // if auth is needed
+
+        const uploadRes = await axios.post('http://43.204.142.97:3001/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        if (uploadRes.data && uploadRes.data.url) {
+          imageUrl = uploadRes.data.url;
+        } else if (uploadRes.data && uploadRes.data.filename) {
+          // If API returns filename, construct URL
+          imageUrl = `http://43.204.142.97:3001/images/${uploadRes.data.filename}`;
+        } else {
+          throw new Error('Invalid upload response');
+        }
+        setUploading(false);
       }
 
-      // Step 2: Add product
-      await axios.post('http://43.204.142.97:3001/products', product);
-      alert('✅ Product added!');
+      // Create product payload
+      const newProduct = {
+        ...product,
+        price: parseFloat(product.price),
+        stock: parseInt(product.stock, 10),
+        image_url: imageUrl,
+      };
 
-      // Reset
+      // Send product creation request
+      const token = localStorage.getItem('token');
+      await axios.post('http://43.204.142.97:3001/products', newProduct, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      alert('✅ Product added!');
       setProduct({ name: '', description: '', price: '', stock: '', image_url: '' });
       setImageFile(null);
     } catch (err) {
+      setUploading(false);
       console.error('Product add failed:', err);
       alert('❌ Failed to add product');
     }
@@ -76,6 +106,8 @@ function AddProduct() {
           value={product.price}
           onChange={handleChange}
           required
+          min="0"
+          step="0.01"
         />
         <input
           className="form-control my-1"
@@ -85,6 +117,7 @@ function AddProduct() {
           value={product.stock}
           onChange={handleChange}
           required
+          min="0"
         />
         <input
           className="form-control my-1"
@@ -99,8 +132,8 @@ function AddProduct() {
             style={{ height: '100px', objectFit: 'cover', marginTop: '10px' }}
           />
         )}
-        <button className="btn btn-primary mt-2" type="submit">
-          Add Product
+        <button className="btn btn-primary mt-2" type="submit" disabled={uploading}>
+          {uploading ? 'Uploading...' : 'Add Product'}
         </button>
       </form>
     </div>
