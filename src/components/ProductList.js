@@ -2,14 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 
-const baseImageUrl = 'http://43.204.142.97:3001/images/';
+const baseImageUrl = 'https://superkart.devopspedia.online/images/';
 
 function ProductList({ onOrder }) {
   const [products, setProducts] = useState([]);
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL || 'http://43.204.142.97:3001'}/products`)
+    axios.get(`${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/products`)
       .then(res => setProducts(res.data))
       .catch(() => alert('Failed to load products'));
   }, []);

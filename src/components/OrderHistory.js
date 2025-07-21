@@ -8,7 +8,7 @@ const OrderHistory = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://43.204.142.97:3001/orders', {
+        const res = await axios.get('https://superkart.devopspedia.online/orders', {
           headers: {
             Authorization: `Bearer ${token}`
           }

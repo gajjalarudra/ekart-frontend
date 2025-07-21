@@ -23,7 +23,7 @@ const UploadImage = ({ onUploadSuccess }) => {
     try {
       setUploading(true);
       const token = localStorage.getItem('token'); // if auth needed
-      const res = await axios.post('http://43.204.142.97:3001/api/upload', formData, {
+      const res = await axios.post('https://superkart.devopspedia.online/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, // if you need auth

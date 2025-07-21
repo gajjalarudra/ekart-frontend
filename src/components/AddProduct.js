@@ -63,7 +63,7 @@ function AddProduct() {
 
       // Send product creation request
       const token = localStorage.getItem('token');
-      await axios.post('http://43.204.142.97:3001/products', newProduct, {
+      await axios.post('https://superkart.devopspedia.online/products', newProduct, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 

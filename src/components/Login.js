@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://43.204.142.97:3001/auth/login`, form);
+      const res = await axios.post(`https://superkart.devopspedia.online/auth/login`, form);
       login(res.data.name, res.data.token);
       navigate('/');
     } catch (err) {

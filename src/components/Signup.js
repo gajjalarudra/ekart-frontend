@@ -19,10 +19,10 @@ const Signup = () => {
     e.preventDefault();
     try {
       
-     await axios.post('http://43.204.142.97:3001/auth/signup', form);
+     await axios.post('https://superkart.devopspedia.online/auth/signup', form);
       
 
-      const res = await axios.post(`http://43.204.142.97:3001/auth/login`, {
+      const res = await axios.post(`https://superkart.devopspedia.online/auth/login`, {
         email: form.email,
         password: form.password,
       });
