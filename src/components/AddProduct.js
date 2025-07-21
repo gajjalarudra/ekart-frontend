@@ -35,7 +35,7 @@ function AddProduct() {
 
         const token = localStorage.getItem('token'); // if auth is needed
 
-        const uploadRes = await axios.post('http://43.204.142.97:3001/upload', formData, {
+        const uploadRes = await axios.post('https://superkart.devopspedia.online/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -46,7 +46,8 @@ function AddProduct() {
           imageUrl = uploadRes.data.url;
         } else if (uploadRes.data && uploadRes.data.filename) {
           // If API returns filename, construct URL
-          imageUrl = `http://43.204.142.97:3001/images/${uploadRes.data.filename}`;
+          imageUrl = `https://superkart.devopspedia.online/
+          images/${uploadRes.data.filename}`;
         } else {
           throw new Error('Invalid upload response');
         }

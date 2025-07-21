@@ -17,7 +17,7 @@ function OrderProduct({ product, onClose }) {
       }
 
       await axios.post(
-        `${process.env.REACT_APP_API_URL || 'http://43.204.142.97:3001'}/orders`,
+        `${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/orders`,
         {
           items: [{ product_id: product.id, quantity: Number(quantity) }],
         },
