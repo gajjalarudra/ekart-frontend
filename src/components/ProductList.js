@@ -9,11 +9,16 @@ function ProductList({ onOrder }) {
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    axios
-      .get(`${baseImageUrl}/products`)
-      .then(res => setProducts(res.data))
-      .catch(() => alert('Failed to load products'));
-  }, []);
+  axios
+    .get(`${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/products`)
+    .then(res => {
+      // Sort so newest appears first (if there's a created_at or id)
+      const sorted = res.data.sort((a, b) => b.id - a.id); 
+      setProducts(sorted);
+    })
+    .catch(() => alert('Failed to load products'));
+}, []);
+
 
   return (
     <div className="my-3">

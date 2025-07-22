@@ -27,9 +27,7 @@ const Navbar = () => {
         <Link to="/about" style={styles.link}>
           <i className="fas fa-info-circle me-1"></i> About
         </Link>
-        <Link to="/products" style={styles.link}>
-          <i className="fas fa-store me-1"></i> Shop
-        </Link>
+        
       </div>
 
       {/* Right Side */}

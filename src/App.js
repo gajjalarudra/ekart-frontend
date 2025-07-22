@@ -48,7 +48,7 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
               <i className="fas fa-plus me-2"></i> Add Product
             </li>
             <li style={styles.navItem} onClick={onShowOrderProduct}>
-              <i className="fas fa-shopping-bag me-2"></i> Order Product
+              <i className="fas fa-shopping-bag me-2"></i> Shop
             </li>
             <li style={styles.navItem} onClick={onShowOrders}>
               <i className="fas fa-box-open me-2"></i> Orders
@@ -69,9 +69,7 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
         </div>
       </div>
 
-      <button style={styles.logoutBtn} onClick={logout}>
-        <i className="fas fa-sign-out-alt me-2"></i> Logout
-      </button>
+      
     </aside>
   );
 }

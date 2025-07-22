@@ -18,7 +18,7 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
           <ul style={styles.navList}>
             <li style={styles.navItem} onClick={onShowHome} title="Home">🏠 Home</li>
             <li style={styles.navItem} onClick={onShowAddProduct} title="Add Product">➕ Add Product</li>
-            <li style={styles.navItem} onClick={onShowOrderProduct} title="Order Product">🛍️ Order Product</li>
+            <li style={styles.navItem} onClick={onShowOrderProduct} title="Shop">🛍️ Shop</li>
             <li style={styles.navItem} onClick={onShowOrders} title="Orders">📦 Orders</li>
           </ul>
         </div>

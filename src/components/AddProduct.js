@@ -33,28 +33,29 @@ function AddProduct() {
         const formData = new FormData();
         formData.append('image', imageFile);
 
-        const token = localStorage.getItem('token'); // if auth is needed
+        const token = localStorage.getItem('token');
+        const uploadRes = await axios.post(
+          'https://superkart.devopspedia.online/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }
+        );
 
-        const uploadRes = await axios.post('https://superkart.devopspedia.online/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
-
-        if (uploadRes.data && uploadRes.data.url) {
+        if (uploadRes.data?.url) {
           imageUrl = uploadRes.data.url;
-        } else if (uploadRes.data && uploadRes.data.filename) {
-          // If API returns filename, construct URL
-          imageUrl = `https://superkart.devopspedia.online/
-          images/${uploadRes.data.filename}`;
+        } else if (uploadRes.data?.filename) {
+          imageUrl = `https://superkart.devopspedia.online/images/${uploadRes.data.filename}`;
         } else {
           throw new Error('Invalid upload response');
         }
+
         setUploading(false);
       }
 
-      // Create product payload
       const newProduct = {
         ...product,
         price: parseFloat(product.price),
@@ -62,7 +63,6 @@ function AddProduct() {
         image_url: imageUrl,
       };
 
-      // Send product creation request
       const token = localStorage.getItem('token');
       await axios.post('https://superkart.devopspedia.online/products', newProduct, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -79,64 +79,92 @@ function AddProduct() {
   };
 
   return (
-    <div className="card p-3 my-3">
-      <h4>Add New Product</h4>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          className="form-control my-1"
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={product.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="form-control my-1"
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={product.description}
-          onChange={handleChange}
-        />
-        <input
-          className="form-control my-1"
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={product.price}
-          onChange={handleChange}
-          required
-          min="0"
-          step="0.01"
-        />
-        <input
-          className="form-control my-1"
-          type="number"
-          name="stock"
-          placeholder="Stock"
-          value={product.stock}
-          onChange={handleChange}
-          required
-          min="0"
-        />
-        <input
-          className="form-control my-1"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        {imageFile && (
-          <img
-            src={URL.createObjectURL(imageFile)}
-            alt="Preview"
-            style={{ height: '100px', objectFit: 'cover', marginTop: '10px' }}
-          />
-        )}
-        <button className="btn btn-primary mt-2" type="submit" disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Add Product'}
-        </button>
-      </form>
+    <div className="container mt-4">
+      <div className="card shadow-sm p-4" style={{ maxWidth: '600px', margin: '0 auto', borderRadius: '16px' }}>
+        <h4 className="mb-4 text-primary fw-bold">➕ Add New Product</h4>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Product Name</label>
+            <input
+              className="form-control"
+              type="text"
+              name="name"
+              value={product.name}
+              onChange={handleChange}
+              placeholder="Enter product name"
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Description</label>
+            <textarea
+              className="form-control"
+              name="description"
+              value={product.description}
+              onChange={handleChange}
+              placeholder="Product description"
+              rows="2"
+            />
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label fw-semibold">Price (₹)</label>
+              <input
+                className="form-control"
+                type="number"
+                name="price"
+                value={product.price}
+                onChange={handleChange}
+                placeholder="e.g. 99.99"
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label fw-semibold">Stock</label>
+              <input
+                className="form-control"
+                type="number"
+                name="stock"
+                value={product.stock}
+                onChange={handleChange}
+                placeholder="e.g. 100"
+                required
+                min="0"
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Product Image</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {imageFile && (
+              <div className="mt-3 text-center">
+                <img
+                  src={URL.createObjectURL(imageFile)}
+                  alt="Preview"
+                  style={{ height: '120px', objectFit: 'cover', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0,0,0,0.2)' }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="d-grid mt-4">
+            <button className="btn btn-primary" type="submit" disabled={uploading}>
+              {uploading ? 'Uploading...' : '✅ Add Product'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
