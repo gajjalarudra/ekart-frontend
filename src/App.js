@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+
 import AddProduct from './components/AddProduct';
 import ProductList from './components/ProductList';
 import OrderProduct from './components/OrderProduct';
@@ -8,11 +10,10 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 import ManageProduct from './components/ManageProduct';
-
-import { Routes, Route, useNavigate } from 'react-router-dom';
 import BlogPage from './components/BlogPage';
 import Profile from './components/Profile';
 import AboutPage from './components/AboutPage';
+import HomePage from './components/HomePage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -44,13 +45,13 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
             <li style={styles.navItem} onClick={() => { onShowHome(); navigate('/'); }}>
               <i className="fas fa-home me-2"></i> Home
             </li>
-            <li style={styles.navItem} onClick={onShowAddProduct}>
+            <li style={styles.navItem} onClick={() => { onShowAddProduct(); navigate('/add-product'); }}>
               <i className="fas fa-plus me-2"></i> Add Product
             </li>
-            <li style={styles.navItem} onClick={onShowOrderProduct}>
+            <li style={styles.navItem} onClick={() => { onShowOrderProduct(); navigate('/shop'); }}>
               <i className="fas fa-shopping-bag me-2"></i> Shop
             </li>
-            <li style={styles.navItem} onClick={onShowOrders}>
+            <li style={styles.navItem} onClick={() => { onShowOrders(); navigate('/orders'); }}>
               <i className="fas fa-box-open me-2"></i> Orders
             </li>
             <li style={styles.navItem} onClick={() => navigate('/blog')}>
@@ -68,66 +69,18 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
           </ul>
         </div>
       </div>
-
-      
     </aside>
   );
 }
 
-function HomeContent({
-  selectedProduct,
-  setSelectedProduct,
-  showAddProduct,
-  showOrderProduct,
-  showOrders,
-  showCart,
-  setShowCart,
-  cartItems,
-  addToCart,
-  removeFromCart,
-  clearCart,
-  handleCheckout,
-}) {
-  return (
-    <main style={styles.mainContent}>
-      <div style={styles.cartBtnWrapper}>
-        <button style={styles.cartBtn} onClick={() => setShowCart(!showCart)}>
-          <i className="fas fa-shopping-cart me-2"></i> View Cart ({cartItems.length})
-        </button>
-      </div>
 
-      {showCart ? (
-        <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={handleCheckout} />
-      ) : showAddProduct ? (
-        <AddProduct />
-      ) : showOrders ? (
-        <OrderHistory />
-      ) : (
-        <>
-          <ProductList addToCart={addToCart} onOrder={setSelectedProduct} />
-          {selectedProduct && (
-            <OrderProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-          )}
-        </>
-      )}
-    </main>
-  );
-}
-
-// ✅ Wrapper for consistent spacing on all non-Home pages
-const PageLayout = ({ children }) => (
-  <main style={styles.mainContent}>
-    {children}
-  </main>
-);
 
 function AppContent() {
+  const location = useLocation();
+
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showAddProduct, setShowAddProduct] = useState(false);
-  const [showOrderProduct, setShowOrderProduct] = useState(false);
-  const [showOrders, setShowOrders] = useState(false);
-  const [showCart, setShowCart] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
   const { cartItems, addToCart, removeFromCart, clearCart } = useContext(CartContext);
@@ -162,34 +115,23 @@ function AppContent() {
     );
   }
 
+  // Handlers for sidebar navigation (optional, you can simplify or remove if navigation already done in sidebar)
   const handleShowHome = () => {
-    setShowAddProduct(false);
-    setShowOrderProduct(false);
-    setShowOrders(false);
     setSelectedProduct(null);
     setShowCart(false);
   };
 
   const handleShowAddProduct = () => {
-    setShowAddProduct(true);
-    setShowOrderProduct(false);
-    setShowOrders(false);
     setSelectedProduct(null);
     setShowCart(false);
   };
 
   const handleShowOrderProduct = () => {
-    setShowAddProduct(false);
-    setShowOrderProduct(true);
-    setShowOrders(false);
     setSelectedProduct(null);
     setShowCart(false);
   };
 
   const handleShowOrders = () => {
-    setShowAddProduct(false);
-    setShowOrderProduct(false);
-    setShowOrders(true);
     setSelectedProduct(null);
     setShowCart(false);
   };
@@ -206,31 +148,35 @@ function AppContent() {
         onShowOrders={handleShowOrders}
       />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomeContent
-              selectedProduct={selectedProduct}
-              setSelectedProduct={setSelectedProduct}
-              showAddProduct={showAddProduct}
-              showOrderProduct={showOrderProduct}
-              showOrders={showOrders}
-              showCart={showCart}
-              setShowCart={setShowCart}
-              cartItems={cartItems}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-              clearCart={clearCart}
-              handleCheckout={handleCheckout}
-            />
-          }
-        />
-        <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
-        <Route path="/profile" element={<PageLayout><Profile /></PageLayout>} />
-        <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
-        <Route path="/manage-products" element={<PageLayout><ManageProduct /></PageLayout>} />
-      </Routes>
+      <main style={styles.mainContent}>
+        {/* Show cart button ONLY if NOT on home page */}
+        {location.pathname !== '/' && (
+          <div style={styles.cartBtnWrapper}>
+            <button style={styles.cartBtn} onClick={() => setShowCart(!showCart)}>
+              <i className="fas fa-shopping-cart me-2"></i> View Cart ({cartItems.length})
+            </button>
+          </div>
+        )}
+
+        {showCart && (
+          <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={handleCheckout} />
+        )}
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/shop" element={<ProductList addToCart={addToCart} onOrder={setSelectedProduct} />} />
+          <Route path="/orders" element={<OrderHistory />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/manage-products" element={<ManageProduct />} />
+        </Routes>
+
+        {selectedProduct && (
+          <OrderProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        )}
+      </main>
     </div>
   );
 }
@@ -301,19 +247,6 @@ const styles = {
     padding: '0.5rem 0.8rem',
     borderRadius: '8px',
     transition: 'background-color 0.2s, color 0.2s',
-  },
-  logoutBtn: {
-    backgroundColor: 'transparent',
-    border: '2px solid #e53e3e',
-    color: '#e53e3e',
-    padding: '0.5rem 1rem',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: '600',
-    fontSize: '0.9rem',
-    alignSelf: 'center',
-    width: '100%',
-    transition: 'all 0.3s ease',
   },
   authWrapper: {
     maxWidth: '420px',
