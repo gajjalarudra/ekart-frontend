@@ -19,7 +19,7 @@ const Navbar = () => {
       {/* Left Side */}
       <div style={styles.left}>
         <Link to="/products" style={styles.logo}>
-          <i className="fas fa-shopping-cart me-2"></i> eKart
+          <i className="fas fa-shopping-cart me-2"></i> SuperKart
         </Link>
         <Link to="/blog" style={styles.link}>
           <i className="fas fa-blog me-1"></i> Blog
