@@ -6,39 +6,122 @@ import CartPage from './components/CartPage';
 import OrderHistory from './components/OrderHistory';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Navbar from './components/Navbar';
+import ManageProduct from './components/ManageProduct';
+
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import BlogPage from './components/BlogPage';
+import Profile from './components/Profile';
+import AboutPage from './components/AboutPage';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import { CartProvider, CartContext } from './context/CartContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
-function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduct, onShowOrders, cartCount }) {
+// Sidebar must be a child of Router to use useNavigate
+function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduct, onShowOrders }) {
+  const navigate = useNavigate();
+
+  if (!user) return null;
+
   return (
     <aside style={styles.sidebar}>
       <div>
         <h2
           style={styles.brand}
-          onClick={onShowHome}
+          onClick={() => { onShowHome(); navigate('/'); }}
           onMouseEnter={e => e.currentTarget.style.color = '#FFB732'}
           onMouseLeave={e => e.currentTarget.style.color = '#FFA500'}
         >
-          🛒 SuperKart
+          <i className="fas fa-shopping-cart me-2"></i> SuperKart
         </h2>
-        <p style={styles.greeting}>Hello, {user.name}</p>
+        <p style={styles.greeting}>Hello, {user.name || 'User'}</p>
 
-        {/* 🔲 Glassy Nav Container */}
         <div style={styles.navContainer}>
           <ul style={styles.navList}>
-            <li style={styles.navItem} onClick={onShowHome} title="Home">🏠 Home</li>
-            <li style={styles.navItem} onClick={onShowAddProduct} title="Add Product">➕ Add Product</li>
-            <li style={styles.navItem} onClick={onShowOrderProduct} title="Order Product">🛍️ Order Product</li>
-            <li style={styles.navItem} onClick={onShowOrders} title="Orders">📦 Orders</li>
+            <li style={styles.navItem} onClick={() => { onShowHome(); navigate('/'); }}>
+              <i className="fas fa-home me-2"></i> Home
+            </li>
+            <li style={styles.navItem} onClick={onShowAddProduct}>
+              <i className="fas fa-plus me-2"></i> Add Product
+            </li>
+            <li style={styles.navItem} onClick={onShowOrderProduct}>
+              <i className="fas fa-shopping-bag me-2"></i> Order Product
+            </li>
+            <li style={styles.navItem} onClick={onShowOrders}>
+              <i className="fas fa-box-open me-2"></i> Orders
+            </li>
+            <li style={styles.navItem} onClick={() => navigate('/blog')}>
+              <i className="fas fa-blog me-2"></i> Blog
+            </li>
+            <li style={styles.navItem} onClick={() => navigate('/profile')}>
+              <i className="fas fa-user me-2"></i> Profile
+            </li>
+            <li style={styles.navItem} onClick={() => navigate('/about')}>
+              <i className="fas fa-info-circle me-2"></i> About
+            </li>
+            <li style={styles.navItem} onClick={() => navigate('/manage-products')}>
+              <i className="fas fa-cogs me-2"></i> Manage Product
+            </li>
           </ul>
         </div>
       </div>
-      <button style={styles.logoutBtn} onClick={logout}>Logout</button>
+
+      <button style={styles.logoutBtn} onClick={logout}>
+        <i className="fas fa-sign-out-alt me-2"></i> Logout
+      </button>
     </aside>
   );
 }
+
+function HomeContent({
+  selectedProduct,
+  setSelectedProduct,
+  showAddProduct,
+  showOrderProduct,
+  showOrders,
+  showCart,
+  setShowCart,
+  cartItems,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  handleCheckout,
+}) {
+  return (
+    <main style={styles.mainContent}>
+      <div style={styles.cartBtnWrapper}>
+        <button style={styles.cartBtn} onClick={() => setShowCart(!showCart)}>
+          <i className="fas fa-shopping-cart me-2"></i> View Cart ({cartItems.length})
+        </button>
+      </div>
+
+      {showCart ? (
+        <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={handleCheckout} />
+      ) : showAddProduct ? (
+        <AddProduct />
+      ) : showOrders ? (
+        <OrderHistory />
+      ) : (
+        <>
+          <ProductList addToCart={addToCart} onOrder={setSelectedProduct} />
+          {selectedProduct && (
+            <OrderProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+          )}
+        </>
+      )}
+    </main>
+  );
+}
+
+// ✅ Wrapper for consistent spacing on all non-Home pages
+const PageLayout = ({ children }) => (
+  <main style={styles.mainContent}>
+    {children}
+  </main>
+);
 
 function AppContent() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -114,51 +197,44 @@ function AppContent() {
   };
 
   return (
-  <div style={styles.appContainer}>
-    <Sidebar
-      user={user}
-      logout={logout}
-      onShowHome={handleShowHome}
-      onShowAddProduct={handleShowAddProduct}
-      onShowOrderProduct={handleShowOrderProduct}
-      onShowOrders={handleShowOrders}
-      cartCount={cartItems.length}
-    />
+    <div style={styles.appContainer}>
+      <Navbar />
+      <Sidebar
+        user={user}
+        logout={logout}
+        onShowHome={handleShowHome}
+        onShowAddProduct={handleShowAddProduct}
+        onShowOrderProduct={handleShowOrderProduct}
+        onShowOrders={handleShowOrders}
+      />
 
-    <main style={styles.mainContent}>
-      <div style={styles.cartBtnWrapper}>
-        <button style={styles.cartBtn} onClick={() => setShowCart(!showCart)}>
-          🧺 View Cart ({cartItems.length})
-        </button>
-      </div>
-
-      {showCart ? (
-        <CartPage
-          cartItems={cartItems}
-          onRemove={removeFromCart}
-          onCheckout={handleCheckout}
-        />
-      ) : showAddProduct ? (
-        <AddProduct />
-      ) : showOrders ? (
-        <OrderHistory />
-      ) : (
-        <>
-          <ProductList
-            addToCart={addToCart}
-            onOrder={setSelectedProduct}  /* <-- Always here */
-          />
-          {selectedProduct && (
-            <OrderProduct
-              product={selectedProduct}
-              onClose={() => setSelectedProduct(null)}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomeContent
+              selectedProduct={selectedProduct}
+              setSelectedProduct={setSelectedProduct}
+              showAddProduct={showAddProduct}
+              showOrderProduct={showOrderProduct}
+              showOrders={showOrders}
+              showCart={showCart}
+              setShowCart={setShowCart}
+              cartItems={cartItems}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              clearCart={clearCart}
+              handleCheckout={handleCheckout}
             />
-          )}
-        </>
-      )}
-    </main>
-  </div>
-);
+          }
+        />
+        <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
+        <Route path="/profile" element={<PageLayout><Profile /></PageLayout>} />
+        <Route path="/about" element={<PageLayout><AboutPage /></PageLayout>} />
+        <Route path="/manage-products" element={<PageLayout><ManageProduct /></PageLayout>} />
+      </Routes>
+    </div>
+  );
 }
 
 function App() {
@@ -171,7 +247,6 @@ function App() {
   );
 }
 
-// 🔧 Styles
 const styles = {
   appContainer: {
     display: 'flex',
@@ -230,9 +305,9 @@ const styles = {
     transition: 'background-color 0.2s, color 0.2s',
   },
   logoutBtn: {
-    backgroundColor: '#e53e3e',
-    border: 'none',
-    color: 'white',
+    backgroundColor: 'transparent',
+    border: '2px solid #e53e3e',
+    color: '#e53e3e',
     padding: '0.5rem 1rem',
     borderRadius: '8px',
     cursor: 'pointer',
@@ -240,7 +315,7 @@ const styles = {
     fontSize: '0.9rem',
     alignSelf: 'center',
     width: '100%',
-    transition: 'background-color 0.3s ease',
+    transition: 'all 0.3s ease',
   },
   authWrapper: {
     maxWidth: '420px',
@@ -265,8 +340,12 @@ const styles = {
   },
   mainContent: {
     marginLeft: '260px',
-    padding: '2rem',
+    padding: '5rem 2rem 2rem',
     flexGrow: 1,
+    minHeight: '100vh',
+    boxSizing: 'border-box',
+    width: 'auto',
+    maxWidth: '100%',
   },
   cartBtnWrapper: {
     display: 'flex',

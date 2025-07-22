@@ -1,0 +1,76 @@
+/* src/components/Navbar.css */
+.custom-navbar {
+  width: 100%;
+  background-color: #1a202c;
+  padding: 0.75rem 2rem;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.custom-navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.custom-navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #48bb78;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1rem;
+}
+
+.custom-nav-item {
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.custom-nav-item:hover {
+  color: #63b3ed;
+}
+
+.custom-navbar-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .custom-navbar-links {
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #2d3748;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    display: none;
+    padding: 1rem 2rem;
+  }
+
+  .custom-navbar-links.open {
+    display: flex;
+  }
+
+  .custom-navbar-toggle {
+    display: block;
+  }
+}
