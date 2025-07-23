@@ -45,6 +45,36 @@
   object-fit: cover;
 }
 
+.sidebar-nav-item {
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1a202c;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav-item:hover {
+  background-color: #d0e7ff;
+  color: #0b4f82;
+  transform: translateX(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-nav-item i {
+  color: #2b6cb0;
+  transition: color 0.3s ease;
+}
+
+.sidebar-nav-item:hover i {
+  color: #0b4f82;
+}
+
 
 
 @keyframes App-logo-spin {

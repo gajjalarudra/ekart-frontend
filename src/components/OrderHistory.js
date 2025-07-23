@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './OrderHistory.css'; // 👈 create this new file
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -10,8 +11,8 @@ const OrderHistory = () => {
         const token = localStorage.getItem('token');
         const res = await axios.get('https://superkart.devopspedia.online/orders', {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setOrders(res.data);
       } catch (err) {
@@ -22,19 +23,23 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="card p-4">
-      <h4>📜 Order History</h4>
+    <div className="order-history-container">
+      <h2 className="order-title">📜 Order History</h2>
       {orders.length === 0 ? (
-        <p>No orders yet.</p>
+        <div className="empty-order">No orders yet.</div>
       ) : (
-        orders.map(order => (
-          <div key={order.id} className="border rounded p-3 mb-3">
-            <strong>Order ID: {order.id}</strong> <br />
-            <small>Total: ₹{order.total_amount}</small> <br />
-            <ul className="mt-2">
-              {order.OrderItems.map(item => (
-                <li key={item.id}>
-                  {item.Product.name} - Qty: {item.quantity} - ₹{item.price}
+        orders.map((order) => (
+          <div key={order.id} className="order-card">
+            <div className="order-header">
+              <span className="order-id">Order #{order.id}</span>
+              <span className="order-total">Total: ₹{order.total_amount}</span>
+            </div>
+            <ul className="order-items">
+              {order.OrderItems.map((item) => (
+                <li key={item.id} className="order-item">
+                  <span className="item-name">{item.Product.name}</span>
+                  <span className="item-qty">Qty: {item.quantity}</span>
+                  <span className="item-price">₹{item.price}</span>
                 </li>
               ))}
             </ul>

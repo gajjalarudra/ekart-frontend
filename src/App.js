@@ -17,6 +17,7 @@ import HomePage from './components/HomePage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import './App.css';
 
 import { CartProvider, CartContext } from './context/CartContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -31,49 +32,50 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
       <div>
         <p style={styles.greeting}>Hello, {user.name || 'User'}</p>
 
-        <div style={styles.navContainer}>
-          <ul style={styles.navList}>
-            <li
-              style={styles.navItem}
-              onClick={() => {
-                onShowHome();
-                navigate('/');
-              }}
-            >
-              <i className="fas fa-home me-2"></i> Home
-            </li>
-            <li
-              style={styles.navItem}
-              onClick={() => {
-                onShowAddProduct();
-                navigate('/add-product');
-              }}
-            >
-              <i className="fas fa-plus me-2"></i> Add Product
-            </li>
-            <li
-              style={styles.navItem}
-              onClick={() => {
-                onShowOrderProduct();
-                navigate('/shop');
-              }}
-            >
-              <i className="fas fa-shopping-bag me-2"></i> Shop
-            </li>
-            <li
-              style={styles.navItem}
-              onClick={() => {
-                onShowOrders();
-                navigate('/orders');
-              }}
-            >
-              <i className="fas fa-box-open me-2"></i> Orders
-            </li>
-            <li style={styles.navItem} onClick={() => navigate('/manage-products')}>
-              <i className="fas fa-cogs me-2"></i> Manage Product
-            </li>
-          </ul>
-        </div>
+        <ul style={styles.navList}>
+          <li
+            className="sidebar-nav-item"
+            onClick={() => {
+              onShowHome();
+              navigate('/');
+            }}
+          >
+            <i className="fas fa-home me-2"></i> Home
+          </li>
+          <li
+            className="sidebar-nav-item"
+            onClick={() => {
+              onShowAddProduct();
+              navigate('/add-product');
+            }}
+          >
+            <i className="fas fa-plus me-2"></i> Add Product
+          </li>
+          <li
+            className="sidebar-nav-item"
+            onClick={() => {
+              onShowOrderProduct();
+              navigate('/shop');
+            }}
+          >
+            <i className="fas fa-shopping-bag me-2"></i> Shop
+          </li>
+          <li
+            className="sidebar-nav-item"
+            onClick={() => {
+              onShowOrders();
+              navigate('/orders');
+            }}
+          >
+            <i className="fas fa-box-open me-2"></i> Orders
+          </li>
+          <li
+            className="sidebar-nav-item"
+            onClick={() => navigate('/manage-products')}
+          >
+            <i className="fas fa-cogs me-2"></i> Manage Product
+          </li>
+        </ul>
       </div>
     </aside>
   );
@@ -181,47 +183,24 @@ const styles = {
   },
   sidebar: {
     position: 'fixed',
-    top: '60px', // below navbar height
+    top: '60px',
     left: 0,
     width: '220px',
-    height: 'calc(100vh - 60px)', // full height minus navbar height
+    height: 'calc(100vh - 60px)',
     backgroundColor: '#e0f0ff',
     padding: '1rem',
     overflowY: 'auto',
     boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-    zIndex: 1099, // below navbar
+    zIndex: 1099,
   },
   greeting: {
     fontWeight: '600',
     fontSize: '1.2rem',
     marginBottom: '1rem',
   },
-  navContainer: {},
   navList: {
     listStyleType: 'none',
     padding: 0,
-  },
-  navItem: {
-    cursor: 'pointer',
-    padding: '0.6rem 0',
-    fontWeight: '500',
-    fontSize: '1rem',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    color: '#333',
-  },
-  logoutBtn: {
-    backgroundColor: '#e53e3e',
-    border: 'none',
-    color: 'white',
-    padding: '0.6rem 1rem',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    fontWeight: '600',
-    fontSize: '1rem',
-    transition: 'background-color 0.3s ease',
-    marginTop: 'auto',
   },
   authWrapper: {
     maxWidth: '420px',
@@ -245,12 +224,12 @@ const styles = {
     fontSize: '0.9rem',
   },
   mainContent: {
-    marginLeft: '220px', // same as sidebar width
-    paddingTop: '60px', // same as navbar height
+    marginLeft: '220px',
+    paddingTop: '60px',
     paddingLeft: '2rem',
     paddingRight: '2rem',
     flexGrow: 1,
-    minHeight: 'calc(100vh - 60px)', // fill remaining height minus navbar
+    minHeight: 'calc(100vh - 60px)',
     boxSizing: 'border-box',
     backgroundColor: '#fff',
   },

@@ -21,7 +21,7 @@ function CartPage({ cartItems, onRemove, onCheckout }) {
 
   return (
     <div style={styles.cartCard}>
-      <h3 style={styles.title}>Items in Cart</h3>
+      <h3 style={styles.title}>Items in your Cart</h3>
       <ul style={styles.itemList}>
         {cartItems.map((item) => (
           <li key={item.id} style={styles.item}>
@@ -36,7 +36,7 @@ function CartPage({ cartItems, onRemove, onCheckout }) {
         ))}
       </ul>
       <div style={styles.total}>
-        <strong>Total:</strong> ₹{total.toFixed(2)}
+        <strong>Total Cart Value:</strong> ₹{total.toFixed(2)}
       </div>
       <button style={styles.checkoutBtn} onClick={onCheckout}>
         ✅ Proceed to Checkout

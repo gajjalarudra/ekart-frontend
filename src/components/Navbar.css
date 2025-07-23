@@ -53,18 +53,42 @@
 }
 
 .custom-nav-item {
-  color: #333;
+  color: #1a202c;
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
-  transition: color 0.3s ease;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  background-color: transparent;
 }
 
 .custom-nav-item:hover {
-  color: #ff9800;
+  background-color: #d0e7ff;
+  color: #0b4f82;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-nav-item i {
+  color: #2b6cb0;
+  transition: color 0.3s ease;
+}
+
+.custom-nav-item:hover i {
+  color: #0b4f82;
+}
+
+.cart-badge {
+  background: #ff6f61;
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: 4px;
 }
 
 .logout-btn {

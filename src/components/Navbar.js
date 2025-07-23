@@ -39,7 +39,8 @@ const Navbar = () => {
                 <i className="fas fa-user"></i> Profile
               </Link>
               <Link to="/cart" className="custom-nav-item" onClick={() => setMenuOpen(false)}>
-                <i className="fas fa-shopping-cart"></i> Cart ({cartItems?.length || 0})
+                <i className="fas fa-shopping-cart"></i> Cart
+                <span className="cart-badge">{cartItems?.length || 0}</span>
               </Link>
               <button onClick={handleLogout} className="logout-btn">
                 <i className="fas fa-sign-out-alt me-1"></i> Logout
