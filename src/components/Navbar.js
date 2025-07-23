@@ -20,8 +20,9 @@ const Navbar = () => {
   return (
     <nav className="custom-navbar">
       <div className="custom-navbar-container">
-        <Link to="/products" className="custom-navbar-brand" onClick={() => setMenuOpen(false)}>
-          <i className="fas fa-shopping-cart"></i> SuperKart
+        <Link to="/" className="custom-navbar-brand" onClick={() => setMenuOpen(false)}>
+          <span className="brand-icon">🛍️</span>
+          <span className="brand-text">SuperKart</span>
         </Link>
 
         <div className={`custom-navbar-links ${menuOpen ? 'open' : ''}`}>

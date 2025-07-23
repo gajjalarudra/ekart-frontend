@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Routes, Route, useNavigate, } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import AddProduct from './components/AddProduct';
 import ProductList from './components/ProductList';
@@ -29,28 +29,44 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
   return (
     <aside style={styles.sidebar}>
       <div>
-        <h2
-          style={styles.brand}
-          onClick={() => { onShowHome(); navigate('/'); }}
-          onMouseEnter={e => e.currentTarget.style.color = '#FFB732'}
-          onMouseLeave={e => e.currentTarget.style.color = '#FFA500'}
-        >
-          <i className="fas fa-shopping-cart me-2"></i> SuperKart
-        </h2>
         <p style={styles.greeting}>Hello, {user.name || 'User'}</p>
 
         <div style={styles.navContainer}>
           <ul style={styles.navList}>
-            <li style={styles.navItem} onClick={() => { onShowHome(); navigate('/'); }}>
+            <li
+              style={styles.navItem}
+              onClick={() => {
+                onShowHome();
+                navigate('/');
+              }}
+            >
               <i className="fas fa-home me-2"></i> Home
             </li>
-            <li style={styles.navItem} onClick={() => { onShowAddProduct(); navigate('/add-product'); }}>
+            <li
+              style={styles.navItem}
+              onClick={() => {
+                onShowAddProduct();
+                navigate('/add-product');
+              }}
+            >
               <i className="fas fa-plus me-2"></i> Add Product
             </li>
-            <li style={styles.navItem} onClick={() => { onShowOrderProduct(); navigate('/shop'); }}>
+            <li
+              style={styles.navItem}
+              onClick={() => {
+                onShowOrderProduct();
+                navigate('/shop');
+              }}
+            >
               <i className="fas fa-shopping-bag me-2"></i> Shop
             </li>
-            <li style={styles.navItem} onClick={() => { onShowOrders(); navigate('/orders'); }}>
+            <li
+              style={styles.navItem}
+              onClick={() => {
+                onShowOrders();
+                navigate('/orders');
+              }}
+            >
               <i className="fas fa-box-open me-2"></i> Orders
             </li>
             <li style={styles.navItem} onClick={() => navigate('/manage-products')}>
@@ -83,7 +99,9 @@ function AppContent() {
             <Signup />
             <p style={styles.authToggleText}>
               Already have an account?{' '}
-              <button style={styles.linkBtn} onClick={() => setShowSignup(false)}>Login</button>
+              <button style={styles.linkBtn} onClick={() => setShowSignup(false)}>
+                Login
+              </button>
             </p>
           </>
         ) : (
@@ -91,7 +109,9 @@ function AppContent() {
             <Login />
             <p style={styles.authToggleText}>
               Don't have an account?{' '}
-              <button style={styles.linkBtn} onClick={() => setShowSignup(true)}>Signup</button>
+              <button style={styles.linkBtn} onClick={() => setShowSignup(true)}>
+                Signup
+              </button>
             </p>
           </>
         )}
@@ -129,11 +149,7 @@ function AppContent() {
           <Route
             path="/cart"
             element={
-              <CartPage
-                cartItems={cartItems}
-                onRemove={removeFromCart}
-                onCheckout={handleCheckout}
-              />
+              <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={handleCheckout} />
             }
           />
         </Routes>
@@ -159,59 +175,53 @@ function App() {
 const styles = {
   appContainer: {
     display: 'flex',
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
+    minHeight: '100vh',
   },
   sidebar: {
-    width: '260px',
-    height: '100vh',
-    backgroundColor: 'rgba(26, 32, 44, 0.85)',
-    color: '#eee',
-    padding: '1.5rem 1.2rem',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     position: 'fixed',
-    top: 0,
+    top: '60px', // below navbar height
     left: 0,
-    boxShadow: '2px 0 8px rgba(0,0,0,0.3)',
-    backdropFilter: 'blur(6px)',
-  },
-  brand: {
-    color: '#FFA500',
-    cursor: 'pointer',
-    userSelect: 'none',
-    fontWeight: '700',
-    fontSize: '1.8rem',
-    marginBottom: '0.6rem',
-    transition: 'color 0.3s ease',
+    width: '220px',
+    height: 'calc(100vh - 60px)', // full height minus navbar height
+    backgroundColor: '#e0f0ff',
+    padding: '1rem',
+    overflowY: 'auto',
+    boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
+    zIndex: 1099, // below navbar
   },
   greeting: {
-    marginBottom: '1.5rem',
-    fontWeight: '500',
-    fontSize: '1.05rem',
+    fontWeight: '600',
+    fontSize: '1.2rem',
+    marginBottom: '1rem',
   },
-  navContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    padding: '1rem',
-    borderRadius: '12px',
-  },
+  navContainer: {},
   navList: {
-    listStyle: 'none',
-    paddingLeft: 0,
-    margin: 0,
+    listStyleType: 'none',
+    padding: 0,
   },
   navItem: {
-    marginBottom: '1rem',
     cursor: 'pointer',
-    color: '#63b3ed',
+    padding: '0.6rem 0',
+    fontWeight: '500',
+    fontSize: '1rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    color: '#333',
+  },
+  logoutBtn: {
+    backgroundColor: '#e53e3e',
+    border: 'none',
+    color: 'white',
+    padding: '0.6rem 1rem',
+    borderRadius: '10px',
+    cursor: 'pointer',
     fontWeight: '600',
-    fontSize: '1.1rem',
-    userSelect: 'none',
-    padding: '0.5rem 0.8rem',
-    borderRadius: '8px',
-    transition: 'background-color 0.2s, color 0.2s',
+    fontSize: '1rem',
+    transition: 'background-color 0.3s ease',
+    marginTop: 'auto',
   },
   authWrapper: {
     maxWidth: '420px',
@@ -235,13 +245,14 @@ const styles = {
     fontSize: '0.9rem',
   },
   mainContent: {
-    marginLeft: '260px',
-    padding: '5rem 2rem 2rem',
+    marginLeft: '220px', // same as sidebar width
+    paddingTop: '60px', // same as navbar height
+    paddingLeft: '2rem',
+    paddingRight: '2rem',
     flexGrow: 1,
-    minHeight: '100vh',
+    minHeight: 'calc(100vh - 60px)', // fill remaining height minus navbar
     boxSizing: 'border-box',
-    width: 'auto',
-    maxWidth: '100%',
+    backgroundColor: '#fff',
   },
 };
 
