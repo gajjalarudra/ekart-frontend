@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BlogPage = () => {
   return (
@@ -15,27 +16,27 @@ const BlogPage = () => {
           <p style={styles.cardText}>
             Stay cool and stylish this summer with our curated list of must-have products.
           </p>
-          <button style={styles.readMoreBtn} onClick={() => alert('Read more about Summer Essentials')}>
-            Read More
-          </button>
+          <Link to="/blog/summer-essentials" style={{ textDecoration: 'none' }}>
+            <button style={styles.readMoreBtn}>Read More</button>
+          </Link>
         </div>
         <div style={styles.card}>
           <h3 style={styles.cardTitle}>How to Choose the Perfect Gadget</h3>
           <p style={styles.cardText}>
             Tips and tricks to help you select gadgets that fit your lifestyle and budget.
           </p>
-          <button style={styles.readMoreBtn} onClick={() => alert('Read more about Choosing Gadgets')}>
-            Read More
-          </button>
+          <Link to="/blog/choose-gadget" style={{ textDecoration: 'none' }}>
+            <button style={styles.readMoreBtn}>Read More</button>
+          </Link>
         </div>
         <div style={styles.card}>
           <h3 style={styles.cardTitle}>Behind the Scenes at SuperKart</h3>
           <p style={styles.cardText}>
             Learn how we source products and ensure quality for our customers.
           </p>
-          <button style={styles.readMoreBtn} onClick={() => alert('Read more about SuperKart')}>
-            Read More
-          </button>
+          <Link to="/blog/about-superkart" style={{ textDecoration: 'none' }}>
+            <button style={styles.readMoreBtn}>Read More</button>
+          </Link>
         </div>
       </div>
       <p style={styles.footerNote}>

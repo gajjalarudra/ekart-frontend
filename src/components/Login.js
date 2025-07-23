@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import './AuthStyles.css'; // Use the same CSS file as Signup
+import { useNavigate, Link } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -12,13 +12,13 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`https://superkart.devopspedia.online/auth/login`, form);
+      const res = await axios.post('https://superkart.devopspedia.online/auth/login', form);
       login(res.data.name, res.data.token);
       navigate('/');
     } catch (err) {
@@ -27,40 +27,53 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-card glass" onSubmit={handleSubmit}>
-        <h1 className="text-center mb-4"><span className="text-primary">SuperKart</span></h1>
+    <div className="login-container">
+      <div className="login-left-panel">
+        <div className="login-branding">
+          <h1>Welcome to <span className="highlight">SuperKart</span></h1>
+          <p>Explore the best deals, daily discounts, and lightning-fast delivery — all in one place!</p>
+          <ul>
+            <li>✔️ Daily exclusive offers</li>
+            <li>✔️ Superfast delivery</li>
+            <li>✔️ Secure checkout</li>
+            <li>✔️ Trusted by thousands</li>
+          </ul>
+        </div>
+      </div>
+      <div className="login-right-panel">
+        <form className="login-form" onSubmit={handleSubmit}>
+          <h2>Login to SuperKart</h2>
 
-        {error && <div className="alert alert-danger">{error}</div>}
+          {error && <div className="error-message">{error}</div>}
 
-        <div className="mb-3">
           <input
             type="email"
             name="email"
             placeholder="Email"
-            className="form-control form-control-lg"
             value={form.email}
             onChange={handleChange}
             required
           />
-        </div>
-
-        <div className="mb-4">
           <input
             type="password"
             name="password"
             placeholder="Password"
-            className="form-control form-control-lg"
             value={form.password}
             onChange={handleChange}
             required
           />
-        </div>
 
-        <button type="submit" className="btn btn-primary w-100 btn-lg">
-          Login
-        </button>
-      </form>
+          <div className="form-links">
+            <a href="#">Forgot your password?</a>
+          </div>
+
+          <button type="submit">Login</button>
+
+          <p className="form-footer">
+            Don't have an account? <Link to="/signup" className="register-link">Register</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

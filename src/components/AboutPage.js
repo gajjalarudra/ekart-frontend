@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
   return (
@@ -7,9 +8,9 @@ const AboutPage = () => {
       <p style={styles.description}>
         SuperKart is a demo e-commerce app built for learning full-stack development and DevOps practices. Our goal is to provide a clean, user-friendly shopping experience while showcasing modern web development techniques.
       </p>
-      <button style={styles.readMoreBtn} onClick={() => alert('More about SuperKart coming soon!')}>
-        Read More
-      </button>
+        <Link to="/blog/about-superkart" style={{ textDecoration: 'none' }}>
+        <button style={styles.readMoreBtn}>Read More</button>
+      </Link>
       <p style={styles.footerNote}>
         Stay tuned for exciting updates and features in the near future!
       </p>

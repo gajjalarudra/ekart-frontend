@@ -12,7 +12,7 @@ const HomePage = () => {
       }}
     >
       <h1 className="mb-4 display-4" style={{ fontWeight: '700', color: '#2d3748' }}>
-        Welcome to <span style={{ color: '#FFA500' }}>SuperKart</span> 🛒
+        Welcome to <span style={{ color: '#2acfcf' }}>SuperKart</span> 🛒
       </h1>
 
       <p className="lead mb-5" style={{ maxWidth: '800px', color: '#4a5568' }}>

@@ -1,0 +1,29 @@
+.blog-details-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.blog-details-title {
+  font-size: 2.4rem;
+  color: #2b6cb0;
+  margin-bottom: 1rem;
+}
+
+.blog-details-image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+}
+
+.blog-details-content {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #4a5568;
+}
