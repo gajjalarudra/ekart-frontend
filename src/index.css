@@ -43,3 +43,23 @@ code {
   font-weight: 600;
 }
 
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #1a202c;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.glass-list-item {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+
