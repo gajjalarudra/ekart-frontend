@@ -40,8 +40,8 @@ const Navbar = () => {
               <Link to="/cart" className="custom-nav-item" onClick={() => setMenuOpen(false)}>
                 <i className="fas fa-shopping-cart"></i> Cart ({cartItems?.length || 0})
               </Link>
-              <button className="custom-nav-item logout-btn" onClick={handleLogout}>
-                <i className="fas fa-sign-out-alt"></i> Logout
+              <button onClick={handleLogout} className="logout-btn">
+                <i className="fas fa-sign-out-alt me-1"></i> Logout
               </button>
             </>
           ) : (

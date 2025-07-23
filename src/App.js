@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, } from 'react-router-dom';
 
 import AddProduct from './components/AddProduct';
 import ProductList from './components/ProductList';
@@ -21,7 +21,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { CartProvider, CartContext } from './context/CartContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
-// Sidebar must be a child of Router to use useNavigate
 function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduct, onShowOrders }) {
   const navigate = useNavigate();
 
@@ -54,7 +53,6 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
             <li style={styles.navItem} onClick={() => { onShowOrders(); navigate('/orders'); }}>
               <i className="fas fa-box-open me-2"></i> Orders
             </li>
-            
             <li style={styles.navItem} onClick={() => navigate('/manage-products')}>
               <i className="fas fa-cogs me-2"></i> Manage Product
             </li>
@@ -65,14 +63,9 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
   );
 }
 
-
-
 function AppContent() {
-  const location = useLocation();
-
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
-  const [showCart, setShowCart] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
   const { cartItems, addToCart, removeFromCart, clearCart } = useContext(CartContext);
@@ -80,7 +73,6 @@ function AppContent() {
   const handleCheckout = () => {
     alert('Checkout logic will be implemented');
     clearCart();
-    setShowCart(false);
   };
 
   if (!user) {
@@ -107,26 +99,10 @@ function AppContent() {
     );
   }
 
-  // Handlers for sidebar navigation (optional, you can simplify or remove if navigation already done in sidebar)
-  const handleShowHome = () => {
-    setSelectedProduct(null);
-    setShowCart(false);
-  };
-
-  const handleShowAddProduct = () => {
-    setSelectedProduct(null);
-    setShowCart(false);
-  };
-
-  const handleShowOrderProduct = () => {
-    setSelectedProduct(null);
-    setShowCart(false);
-  };
-
-  const handleShowOrders = () => {
-    setSelectedProduct(null);
-    setShowCart(false);
-  };
+  const handleShowHome = () => setSelectedProduct(null);
+  const handleShowAddProduct = () => setSelectedProduct(null);
+  const handleShowOrderProduct = () => setSelectedProduct(null);
+  const handleShowOrders = () => setSelectedProduct(null);
 
   return (
     <div style={styles.appContainer}>
@@ -141,19 +117,6 @@ function AppContent() {
       />
 
       <main style={styles.mainContent}>
-        {/* Show cart button ONLY if NOT on home page */}
-        {location.pathname !== '/' && (
-          <div style={styles.cartBtnWrapper}>
-            <button style={styles.cartBtn} onClick={() => setShowCart(!showCart)}>
-              <i className="fas fa-shopping-cart me-2"></i> View Cart ({cartItems.length})
-            </button>
-          </div>
-        )}
-
-        {showCart && (
-          <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={handleCheckout} />
-        )}
-
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/add-product" element={<AddProduct />} />
@@ -163,6 +126,16 @@ function AppContent() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/manage-products" element={<ManageProduct />} />
+          <Route
+            path="/cart"
+            element={
+              <CartPage
+                cartItems={cartItems}
+                onRemove={removeFromCart}
+                onCheckout={handleCheckout}
+              />
+            }
+          />
         </Routes>
 
         {selectedProduct && (
@@ -269,21 +242,6 @@ const styles = {
     boxSizing: 'border-box',
     width: 'auto',
     maxWidth: '100%',
-  },
-  cartBtnWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginBottom: '1.5rem',
-  },
-  cartBtn: {
-    border: '2px solid #63b3ed',
-    backgroundColor: 'transparent',
-    color: '#3182ce',
-    padding: '0.5rem 1rem',
-    borderRadius: '8px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'all 0.25s ease',
   },
 };
 
