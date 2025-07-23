@@ -54,15 +54,7 @@ function Sidebar({ user, logout, onShowHome, onShowAddProduct, onShowOrderProduc
             <li style={styles.navItem} onClick={() => { onShowOrders(); navigate('/orders'); }}>
               <i className="fas fa-box-open me-2"></i> Orders
             </li>
-            <li style={styles.navItem} onClick={() => navigate('/blog')}>
-              <i className="fas fa-blog me-2"></i> Blog
-            </li>
-            <li style={styles.navItem} onClick={() => navigate('/profile')}>
-              <i className="fas fa-user me-2"></i> Profile
-            </li>
-            <li style={styles.navItem} onClick={() => navigate('/about')}>
-              <i className="fas fa-info-circle me-2"></i> About
-            </li>
+            
             <li style={styles.navItem} onClick={() => navigate('/manage-products')}>
               <i className="fas fa-cogs me-2"></i> Manage Product
             </li>
