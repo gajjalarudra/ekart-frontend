@@ -44,7 +44,7 @@ const Profile = () => {
           </div>
 
           <p><strong>Name:</strong> {user.name || 'Name not available'}</p>
-          <p><strong>Email:</strong> {user.email || 'Email not available'}</p>
+          <p><strong>Email:</strong> {user.email || 'superkart@devopspedia.online'}</p>
         </>
       ) : (
         <p>You must be logged in to view this page.</p>
