@@ -1,14 +1,48 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import defaultAvatar from '../assets/default-avtar.jpg'; // Make sure this file exists
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
+  const [profileImage, setProfileImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div style={styles.container}>
-      <h2>Profile Page</h2>
+      <h2 style={styles.title}>Profile Page</h2>
+
       {user ? (
         <>
+          <img
+            src={profileImage || defaultAvatar}
+            alt="Profile"
+            style={styles.avatar}
+          />
+
+          {/* This wrapper ensures label appears below the image */}
+          <div style={styles.uploadWrapper}>
+            <label htmlFor="upload" style={styles.uploadLabel}>
+              Choose Profile Picture
+              <input
+                id="upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={styles.fileInput}
+              />
+            </label>
+          </div>
+
           <p><strong>Name:</strong> {user.name || 'Name not available'}</p>
           <p><strong>Email:</strong> {user.email || 'Email not available'}</p>
         </>
@@ -33,6 +67,36 @@ const styles = {
     color: '#2d3748',
     textAlign: 'center',
     minHeight: '60vh',
+  },
+  title: {
+    fontSize: '1.8rem',
+    marginBottom: '1rem',
+    color: '#2b6cb0',
+  },
+  avatar: {
+    width: '120px',
+    height: '120px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '3px solid #3182ce',
+    marginBottom: '1rem',
+  },
+  uploadWrapper: {
+    marginBottom: '1.5rem',
+  },
+  uploadLabel: {
+    display: 'inline-block',
+    backgroundColor: '#3182ce',
+    color: 'white',
+    padding: '0.5rem 1.2rem',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '0.95rem',
+    transition: 'background-color 0.3s ease',
+  },
+  fileInput: {
+    display: 'none',
   },
 };
 

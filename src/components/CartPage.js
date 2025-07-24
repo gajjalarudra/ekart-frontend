@@ -38,9 +38,11 @@ function CartPage({ cartItems, onRemove, onCheckout }) {
       <div style={styles.total}>
         <strong>Total Cart Value:</strong> ₹{total.toFixed(2)}
       </div>
-      <button style={styles.checkoutBtn} onClick={onCheckout}>
-        ✅ Proceed to Checkout
-      </button>
+      <Link to="/checkout" style={{ textDecoration: 'none' }}>
+          <button style={styles.checkoutBtn}>
+            ✅ Proceed to Checkout
+          </button>
+      </Link>
     </div>
   );
 }

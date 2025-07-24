@@ -17,6 +17,7 @@ import HomePage from './components/HomePage';
 import SummerEssentials from './pages/SummerEssentials';
 import ChooseGadget from './pages/ChooseGadget';
 import AboutSuperKart from './pages/AboutSuperKart';
+import CheckoutPending from './pages/CheckoutPending';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -107,6 +108,7 @@ function AppContent() {
                       <CartPage cartItems={cartItems} onRemove={removeFromCart} onCheckout={() => { alert('Checkout'); clearCart(); }} />
                     }
                   />
+                  <Route path="/checkout" element={<CheckoutPending />} />
                 </Routes>
                 {selectedProduct && (
                   <OrderProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
