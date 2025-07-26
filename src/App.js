@@ -18,6 +18,7 @@ import SummerEssentials from './pages/SummerEssentials';
 import ChooseGadget from './pages/ChooseGadget';
 import AboutSuperKart from './pages/AboutSuperKart';
 import CheckoutPending from './pages/CheckoutPending';
+import ProductDetails from './components/ProductDetails';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -109,6 +110,7 @@ function AppContent() {
                     }
                   />
                   <Route path="/checkout" element={<CheckoutPending />} />
+                  <Route path="/products/:id" element={<ProductDetails />} />
                 </Routes>
                 {selectedProduct && (
                   <OrderProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />

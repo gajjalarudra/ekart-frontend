@@ -1,23 +1,28 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 const baseImageUrl = process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online';
 
 function ProductList({ onOrder }) {
   const [products, setProducts] = useState([]);
   const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/products`)
       .then(res => {
-        // Sort newest first by id descending
         const sorted = res.data.sort((a, b) => b.id - a.id);
         setProducts(sorted);
       })
       .catch(() => alert('Failed to load products'));
   }, []);
+
+  const handleCardClick = (productId) => {
+    navigate(`/products/${productId}`);
+  };
 
   return (
     <div className="my-3">
@@ -38,8 +43,9 @@ function ProductList({ onOrder }) {
               className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch"
             >
               <div
-                className="card w-100 shadow-sm border-0 d-flex flex-column"
-                style={{ borderRadius: '12px' }}
+                className="card w-100 shadow-sm border-0 d-flex flex-column product-card"
+                style={{ borderRadius: '12px', cursor: 'pointer' }}
+                onClick={() => handleCardClick(product.id)}
               >
                 <div
                   className="card-img-wrapper"
@@ -52,7 +58,10 @@ function ProductList({ onOrder }) {
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
-                <div className="card-body d-flex flex-column flex-grow-1">
+                <div
+                  className="card-body d-flex flex-column flex-grow-1"
+                  onClick={e => e.stopPropagation()} // prevent card click when clicking buttons
+                >
                   <h5 className="card-title mb-1">{product.name}</h5>
                   <p className="text-muted mb-2" style={{ fontSize: '0.9rem' }}>
                     {product.description || 'No description available.'}
@@ -97,6 +106,18 @@ function ProductList({ onOrder }) {
           );
         })}
       </div>
+
+      {/* CSS for hover effect */}
+      <style>{`
+        .product-card {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+          z-index: 10;
+        }
+      `}</style>
     </div>
   );
 }
