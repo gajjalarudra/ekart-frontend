@@ -62,4 +62,38 @@ code {
   margin-bottom: 0.5rem;
 }
 
+.low-stock-msg {
+  color: #d35400; /* warm orange */
+  font-weight: 700;
+  background-color: #fdebd0; /* light orange background */
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgb(211 84 0 / 0.4);
+}
+
+.out-of-stock-msg {
+  color: #c0392b; /* bold red */
+  font-weight: 700;
+  background-color: #f9d6d5; /* soft red background */
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgb(192 57 43 / 0.4);
+}
+
+.in-stock-msg {
+  color: #27ae60; /* fresh green */
+  font-weight: 700;
+  background-color: #d5f5e3; /* light green background */
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgb(39 174 96 / 0.4);
+}
+
+
 

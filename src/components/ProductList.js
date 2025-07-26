@@ -9,20 +9,21 @@ function ProductList({ onOrder }) {
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-  axios
-    .get(`${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/products`)
-    .then(res => {
-      // Sort so newest appears first (if there's a created_at or id)
-      const sorted = res.data.sort((a, b) => b.id - a.id); 
-      setProducts(sorted);
-    })
-    .catch(() => alert('Failed to load products'));
-}, []);
-
+    axios
+      .get(`${process.env.REACT_APP_API_URL || 'https://superkart.devopspedia.online'}/products`)
+      .then(res => {
+        // Sort newest first by id descending
+        const sorted = res.data.sort((a, b) => b.id - a.id);
+        setProducts(sorted);
+      })
+      .catch(() => alert('Failed to load products'));
+  }, []);
 
   return (
     <div className="my-3">
-      <h4 className="mb-4" style={{ fontWeight: 600, color: '#2d3748' }}>📦 Products</h4>
+      <h4 className="mb-4" style={{ fontWeight: 600, color: '#2d3748' }}>
+        📦 Products
+      </h4>
       <div className="row g-4">
         {products.map(product => {
           const imageSrc = product.image_url
@@ -32,9 +33,18 @@ function ProductList({ onOrder }) {
             : 'https://via.placeholder.com/300x180?text=No+Image';
 
           return (
-            <div key={product.id} className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
-              <div className="card w-100 shadow-sm border-0 d-flex flex-column" style={{ borderRadius: '12px' }}>
-                <div className="card-img-wrapper" style={{ height: '200px', overflow: 'hidden' }}>
+            <div
+              key={product.id}
+              className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch"
+            >
+              <div
+                className="card w-100 shadow-sm border-0 d-flex flex-column"
+                style={{ borderRadius: '12px' }}
+              >
+                <div
+                  className="card-img-wrapper"
+                  style={{ height: '200px', overflow: 'hidden' }}
+                >
                   <img
                     src={imageSrc}
                     alt={product.name}
@@ -48,15 +58,25 @@ function ProductList({ onOrder }) {
                     {product.description || 'No description available.'}
                   </p>
                   <div className="mb-3">
-                    <span className="fw-bold">₹{Number(product.price).toFixed(2)}</span><br />
+                    <span className="fw-bold">₹{Number(product.price).toFixed(2)}</span>
+                    <br />
                     <small className="text-muted">Stock: {product.stock}</small>
+                  </div>
+                  <div className="product-stock">
+                    {product.stock <= 10 && product.stock > 0 ? (
+                      <span className="low-stock-msg">⚠️ Only {product.stock} left!</span>
+                    ) : product.stock === 0 ? (
+                      <span className="out-of-stock-msg">❌ Out of stock</span>
+                    ) : (
+                      <span className="in-stock-msg">In stock: {product.stock}</span>
+                    )}
                   </div>
                   <div className="mt-auto d-flex justify-content-between">
                     <button
                       className="btn btn-outline-primary btn-sm"
                       onClick={() => addToCart(product)}
                       disabled={product.stock === 0}
-                      title={product.stock === 0 ? "Out of stock" : "Add to Cart"}
+                      title={product.stock === 0 ? 'Out of stock' : 'Add to Cart'}
                     >
                       🛒 Add to Cart
                     </button>
@@ -64,6 +84,8 @@ function ProductList({ onOrder }) {
                       <button
                         className="btn btn-success btn-sm"
                         onClick={() => onOrder(product)}
+                        disabled={product.stock === 0}
+                        title={product.stock === 0 ? 'Out of stock' : 'Order now'}
                       >
                         🛍️ Order
                       </button>
